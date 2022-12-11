@@ -1,25 +1,68 @@
-import logo from './logo.svg';
-import './App.css';
+import { Component } from "react";
+import "./App.css";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+// დავალება 1
+const generateUsers = () => {
+  let users = ["user1","user2"," user3"," user4"," user5"," user6"," user7"," user8"," user9"," user10",
+  ];
+  return users;
+};
+
+
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      user: [],
+      showUsersList: true,
+    };
+  }
+
+  componentDidMount() {
+    const userFromBe = generateUsers();
+    this.setState({
+      user: userFromBe,
+    });
+    console.log("componentDidMount");
+  }
+
+  shouldComponentUpdate(nextprops, nextstate) {
+    if (!nextstate.showUsersList) {
+      return false;
+    }
+    return true;
+  }
+
+  componentDidUpdate(prevpops, prevstate) {
+    if (prevstate.user != this.state.user) {
+      document.title = `${this.state.user.length} users left`;
+    }
+  }
+  buttonClickHendler = () => {
+    const randomList =  this.state.user[Math.floor(Math.random() * this.state.user.length)];
+    
+    const randomUser = this.state.user.filter((element) => {
+      return element !== randomList;
+    });
+    this.setState({
+      user: randomUser,
+    });
+  };
+
+
+
+  render() {
+    return (
+      <div>
+        {this.state.user.map((item, index) => {
+          return <h1 key={index}>{item}</h1>;
+        })}
+        <button onClick={this.buttonClickHendler}> click here</button>
+      </div>
+    );
+  }
 }
 
-export default App;
+
+
