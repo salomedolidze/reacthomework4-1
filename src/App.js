@@ -1,6 +1,5 @@
+import './App.css';
 import { Component } from "react";
-import "./App.css";
-
 
 // დავალება 1
 const generateUsers = () => {
@@ -15,7 +14,7 @@ export default class App extends Component {
     super();
     this.state = {
       user: [],
-      showUsersList: true,
+      showUsersList: false,
     };
   }
 
@@ -27,15 +26,15 @@ export default class App extends Component {
     console.log("componentDidMount");
   }
 
-  shouldComponentUpdate(nextprops, nextstate) {
-    if (!nextstate.showUsersList) {
-      return false;
-    }
-    return true;
-  }
+  // shouldComponentUpdate(nextprops, nextstate) {
+  //   if (!nextstate.showUsersList) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   componentDidUpdate(prevpops, prevstate) {
-    if (prevstate.user != this.state.user) {
+    if (prevstate.user !== this.state.user) {
       document.title = `${this.state.user.length} users left`;
     }
   }
@@ -54,14 +53,21 @@ export default class App extends Component {
 
   render() {
     return (
-      <div>
-        {this.state.user.map((item, index) => {
-          return <h1 key={index}>{item}</h1>;
-        })}
+      <div> 
         <button onClick={this.buttonClickHendler}> click here</button>
+        <button onClick={()=>{this.setState({showUsersList:!this.state.showUsersList})}}>{this.state.showUsersList ? "hide" : "show"} users</button>
+       {this.state.showUsersList &&  <RenderUser userlist={this.state.user}/>}
+
       </div>
     );
   }
+}
+
+const RenderUser=({userlist})=>{
+  return (<div>
+    {userlist.map((item, index) => {
+              return <h1 key={index}>{item}</h1>;})}
+      </div>)
 }
 
 
